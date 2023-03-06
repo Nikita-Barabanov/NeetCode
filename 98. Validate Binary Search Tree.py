@@ -10,16 +10,23 @@ class TreeNode:
 
 class Solution:
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
-        # Неправильно
-        nodes = [root]
-        for node in nodes:
-            if node.left:
-                if node.left.val >= node.val:
-                    return False
-                nodes.append(node.left)
-            if node.right:
-                if node.right.val <= node.val:
-                    return False
-                nodes.append(node.right)
+        pre_val, valid = -2**31 - 1, True
 
-        return True
+        def infix(node: Optional[TreeNode]) -> None:
+            nonlocal pre_val, valid
+            if node.left:
+                infix(node.left)
+            if node.val <= pre_val:
+                valid = False
+            else:
+                pre_val = node.val
+            if node.right:
+                infix(node.right)
+
+        infix(root)
+        return valid
+
+
+s = Solution()
+root = TreeNode(val=5, left=TreeNode(val=1), right=TreeNode(val=4, left=TreeNode(3), right=TreeNode(6)))
+s.isValidBST(root)
