@@ -3,16 +3,13 @@ from typing import List
 
 class Solution:
     def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
-        def count(lst):
-            counter = {}
-            for elem in lst:
-                counter[elem] = counter.get(elem, 0) + 1
-            return counter
+        cnt1, cnt2 = Counter(nums1), Counter(nums2)
+        ans = []
+        for elem in cnt1:
+            if elem in cnt2:
+                ans.extend([elem] * min(cnt1[elem], cnt2[elem]))
+        return ans
 
-        counter1, counter2 = count(nums1), count(nums2)
-        intersection = []
-        for elem in counter1:
-            if elem in counter2:
-                intersection.extend([elem] * min(counter1[elem], counter2[elem]))
-
-        return intersection
+# class Solution:
+#     def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
+#         return (Counter(nums1) & Counter(nums2)).elements()
